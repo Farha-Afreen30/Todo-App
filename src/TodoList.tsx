@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 type Todo = {
   id: number;
@@ -9,7 +9,7 @@ type Todo = {
 
 type TodoInputProps = {
   todos: Todo[];
-  setTodos: any;
+  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
 };
 
 const generateId = (() => {
@@ -19,9 +19,12 @@ const generateId = (() => {
 
 const TodoList = ({ todos, setTodos }: TodoInputProps) => {
   const [task, setTask] = useState<string>("");
-  const inputRef = useRef<any>();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate(); // For programmatic navigation
 
   const addTodo = () => {
+    if (!task.trim()) return;
+
     const newTodo: Todo = {
       id: generateId(),
       task,
@@ -52,8 +55,12 @@ const TodoList = ({ todos, setTodos }: TodoInputProps) => {
       <h2>Tasks</h2>
       <ul>
         {todos.map((todo) => (
-          <li key={todo.id}>
-            <Link to={`/todo/${todo.id}`}>{todo.task}</Link> - Added at: {todo.addedAt}
+          <li
+            key={todo.id}
+            style={{ cursor: "pointer", color: "blue" }}
+            onClick={() => navigate(`/todo/${todo.id}`)} // Navigates on click
+          >
+            {todo.task} - Added at: {todo.addedAt}
           </li>
         ))}
       </ul>

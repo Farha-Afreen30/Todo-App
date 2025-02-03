@@ -1,5 +1,11 @@
-const ProtectedRoute = ({ element }: { element: JSX.Element }) => {
-  return element;
+import { ReactElement } from "react";
+
+type ProtectedRouteProps = {
+  element: ReactElement;
+};
+
+const ProtectedRoute = ({ element }: ProtectedRouteProps) => {
+  return element; 
 };
 
 export default ProtectedRoute;

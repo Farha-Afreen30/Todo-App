@@ -1,8 +1,7 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import { useState } from "react";
-import TodoList from "./TodoList";
-import TodoDetails from "./TodoDetails";
-import ProtectedRoute from "./ProtectedRoute"; // Import the HOC
+import withRoutes from "./withRoutes";
+import routes from "./routes";
 import "./App.css";
 
 type Todo = {
@@ -13,21 +12,20 @@ type Todo = {
 
 const App = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
+  
+  const RoutesComponent = withRoutes(routes(todos, setTodos));
 
   return (
     <div className="container">
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Navigate to="/todo" />} />
-          <Route path="/todo" element={<ProtectedRoute element={<TodoList todos={todos} setTodos={setTodos} />} />} />
-          <Route path="/todo/:id" element={<ProtectedRoute element={<TodoDetails todos={todos} />} />} />
-        </Routes>
+        <RoutesComponent />
       </BrowserRouter>
     </div>
   );
 };
 
 export default App;
+
 
 
 
